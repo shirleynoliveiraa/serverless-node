@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "express": "^4.20.0",
+    "serverless-http": "^3.2.0"
+  }
+}

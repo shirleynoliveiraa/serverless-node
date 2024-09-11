@@ -1,0 +1,38 @@
+service: api-nodeless
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+      Resource:
+        - arn:aws:dynamodb:us-east-1:*:table/UsersTable
+
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: users
+          method: post
+      - http:
+          path: users/{id}
+          method: get
+
+resources:
+  Resources:
+    UsersTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "UsersTable"
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
